@@ -7,7 +7,6 @@ urlpatterns = [
     path('ator/all', views.get_all_actors),
     path('ator/get', views.get_actor),
     path('ator/post', views.post_actor),
-    path('ator/actors_by_film', views.get_actors_by_film),
     path('diretor/all', views.get_all_directors),
     path('diretor/get', views.get_director),
     path('diretor/post', views.post_director),

@@ -62,22 +62,6 @@ def post_actor(request):
 
     return Response({"detail": "Ator já existe."}, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
-def get_actors_by_film(request):
-    if "titulo" in request.query_params:
-        titulo = request.query_params["titulo"].lower()
-        try:
-            filme = Filme.objects.get(titulo=titulo)
-        except Filme.DoesNotExist:
-            return Response({"detail": "Filme não encontrado."}, status=status.HTTP_404_NOT_FOUND)
-
-        atores = filme.atores.all()
-        serializer = AtorSerializer(atores, many=True)
-        return Response(serializer.data)
-
-    else:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-
 #Diretores
 @api_view(['GET'])
 def get_all_directors(request):
@@ -153,10 +137,12 @@ def get_film(request):
 
 @api_view(['GET'])
 def get_films_by_actor(request):
-    if "nome" in request.query_params:
-        nome = request.query_params["nome"].lower()
+    if request.data.get('nome'):
+            
+        nome = request.data.get('nome')
+        
         try:
-            ator = Ator.objects.get(nome=nome)
+            ator = Ator.objects.get(nome__iexact=nome)
         except Ator.DoesNotExist:
             return Response({"detail": "Ator não encontrado."}, status=status.HTTP_404_NOT_FOUND)
 

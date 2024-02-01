@@ -1,46 +1,106 @@
-# Airbnb
-T2 - INF1407 - Programação para a Web 2023.2
+# IMDB BackEnd
+**Desenvolvedor:** Wallace de Freitas - 1621612
 
-Michel Anísio ALmeida - 1521767
-Wallace de Freitas    - 1621612
+Este projeto tem como objetivo ser um clone do IMDB com funcionalidades reduzidas. Um usuário não autenticado pode consultar filmes/atores e usuários autenticados podem realizar operações de Update, Delete e Post de novos filmes.
 
-Este projeto consiste em um site de avaliação de hospedagens, onde um usuário pode dar uma nota e escrever um depoimento sobre o local em que se hospedou.
+## Endpoints e JSON
 
-# Models e Endpoints
+### Ator
+- `ator/all`: Retorna uma lista com todos os atores. Não precisa de parâmetro.
+- `ator/get`: Busca um ator pelo nome e retorna o objeto. Parâmetro:
+```json
+{
+    "nome": "maria"
+}
+```
+- `ator/post`: Insere um ator na base de dados. Parâmetro:
+```json
+{
+    "nome": "joao"
+}
+```
 
-@User
-user_nickname = String(100), PK
-user_email =    String(100)
-user_password = String(100)
+### Diretor
+- `diretor/all`: Retorna uma lista com todos os diretores. Não precisa de parâmetro.
+- `diretor/get`: Busca um diretor pelo nome e retorna o objeto. Parâmetro:
+```json
+{
+    "nome": "maria"
+}
+```
+- `diretor/post`: Insere um diretor na base de dados. Parâmetro:
+```json
+{
+    "nome": "joao"
+}
+```
 
-GET - /api/user/all - Lista todos os usuários cadastrados
-Parâmetros: Não requer
+### Filme
+- `filme/all`: Retorna uma lista com todos os filmes. Não precisa de parâmetro.
+- `filme/get`: Busca um filme pelo nome e retorna o objeto. Parâmetro:
+```json
+{
+     "titulo": "shazam"
+}
+```
+- `filme/post`: Insere um novo filme na base de dados. Precisa de um token de autenticação. Parâmetro:
+```json
+{
+    "token": "29387a04e3958bc54a5f8c7ac475284bfc7fbc01",
+    "titulo": "Nome do Filme",
+    "ano": 2023,
+    "sinopse": "Sinopse do Filme",
+    "atores": ["Ator1","Ator2"],
+    "diretor": "Diretor"
+}
+```
 
-POST - /api/user/manager/
-{"user_nickname" : "user1",
-"user_email" : "user1@gmail.com",
-"user_password" : "1234"}
+- `filme/del`: Deleta um filme da base de dados. Precisa de um token de autenticação. Parâmetro: 
+```json
+{
+	"token": "29387a04e3958bc54a5f8c7ac475284bfc7fbc01", 
+	"titulo": "Nome do filme"}
+```
 
-GET - /api/user/manager/
-{"user_nickname" : "user2"}
+- `filme/post`: Insere um novo filme na base de dados. Precisa de um token de autenticação. Parâmetro:
 
+```json
+{
+    "token": "29387a04e3958bc54a5f8c7ac475284bfc7fbc01",
+    "titulo": "nome original",
+    "ano": 2030,
+    "sinopse": "Nova Sinopse",
+    "atores": ["novo ator","nova atriz"],
+    "diretor": "novo diretor"
+}
+```
 
-@UserComments
-airbnb_name =   String(100),        PK
-user_nickname = FK pra Users        PK
-user_note =     Int
-user_comment =  String(1000)
+- `filme/films_by_actor`: Retorna todos os filmes que o ator já participou. Parâmetro:
 
+```json
+{
+	"nome": "joão"
+}
+```
 
-GET - /api/comments/all - Lista todos os comentários de todos os usuários
-Parâmetros: Não requer
-
-POST/PUT - /api/comments/manager/
-{"airbnb_name" : "Casa da Maria",
-"user_nickname" : "user1",
-"user_note" : 4,
-"user_comment" : "Bela casa, bem espaçosa"}
-
-GET/DEL - /api/comments/manager/ 
-{"airbnb_name" : "Casa da Maria",
-"user_nickname" : "user1"}
+### Usuário
+- `user/register`: Registra um novo usuário no banco e retorna seu token. Parâmetro:
+```json
+{
+	"username": "nome do usuário",
+    "password": "senha do usuário"
+}
+```
+- `user/login`: Retorna o token de um usuário já cadastrado. Parâmetro:
+```json
+{
+	"username": "nome do usuário",
+    "password": "senha do usuário"
+}
+```
+- `user/logout`:Deleta o token passado, assim fazendo logout. Parâmetro:
+```json
+{
+	"token": "ba047b4504d20a87f5f5af6f2864c948b87ff3dc"
+}
+```
