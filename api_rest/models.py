@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class User(models.Model):
     
@@ -8,13 +9,19 @@ class User(models.Model):
 
     def __str__(self):
         return f'Nickname: {self.user_nickname} | E-mail: {self.user_email} | Password: {self.user_password}'
-
-
-class UserComments(models.Model):
-    airbnb_name = models.CharField(max_length=100, default='')
-    user_nickname = models.ForeignKey(User, on_delete=models.CASCADE)
-    user_note = models.IntegerField(default=0)
-    user_comment = models.CharField(max_length=1000, default='')
     
-    class Meta:
-        unique_together = ('airbnb_name', 'user_nickname')
+class Ator(models.Model):
+    nome = models.CharField(max_length=100)
+
+class Diretor(models.Model):
+    nome = models.CharField(max_length=100)
+
+class Filme(models.Model):
+    titulo = models.CharField(max_length=100)
+    ano = models.IntegerField()
+    sinopse = models.TextField()
+    atores = models.ManyToManyField(Ator)
+    diretor = models.ForeignKey(Diretor, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.titulo
